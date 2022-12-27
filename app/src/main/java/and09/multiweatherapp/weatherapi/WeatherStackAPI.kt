@@ -1,5 +1,6 @@
 package and09.multiweatherapp.weatherapi
 
+import and09.multiweatherapp.BuildConfig
 import and09.multiweatherapp.HttpRequest
 import org.json.JSONException
 import org.json.JSONObject
@@ -9,7 +10,7 @@ import java.net.URLEncoder
 class WeatherStackAPI private constructor(queryString: String) {
     private val weatherData: JSONObject
     companion object {
-        private const val API_KEY = "239be3b81a520b9e15cf3a1a392eeba6"
+        private const val API_KEY = BuildConfig.WeatherStack_API_KEY
         private const val BASE_URL = "http://api.weatherstack.com/current?access_key=$API_KEY&"
 
         @Throws(IOException::class, JSONException::class)

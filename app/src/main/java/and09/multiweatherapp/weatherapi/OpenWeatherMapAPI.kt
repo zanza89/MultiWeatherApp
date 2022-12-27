@@ -1,6 +1,8 @@
 package and09.multiweatherapp.weatherapi
 
+import and09.multiweatherapp.BuildConfig
 import and09.multiweatherapp.HttpRequest
+import android.content.Context
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -8,8 +10,9 @@ import java.net.URLEncoder
 
 class OpenWeatherMapAPI private constructor(queryString: String): WeatherAPI {
     private val weatherData: JSONObject
+
     companion object {
-        private const val API_KEY = "571db2f18b21879c3193f9aecfc45309"
+        private const val API_KEY = BuildConfig.OpenWeatherMap_API_KEY
         private const val BASE_URL = "http://api.openweathermap.org/data/2.5/weather?id=524901&appid=$API_KEY&"
         @Throws(IOException::class, JSONException::class)
         fun fromLocationName(locationName: String?): WeatherAPI {
