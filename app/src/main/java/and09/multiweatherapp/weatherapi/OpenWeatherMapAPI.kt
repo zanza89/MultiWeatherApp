@@ -2,7 +2,6 @@ package and09.multiweatherapp.weatherapi
 
 import and09.multiweatherapp.BuildConfig
 import and09.multiweatherapp.HttpRequest
-import android.content.Context
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -41,7 +40,7 @@ class OpenWeatherMapAPI private constructor(queryString: String): WeatherAPI {
     override val iconUrl: String
         get() {
             val weather = weatherData.getJSONArray("weather")
-            return "https://openweathermap.org/img/w/${weather.getJSONObject(0).getString("icon")}"
+            return "https://openweathermap.org/img/w/${weather.getJSONObject(0).getString("icon")}.png"
         }
     @get:Throws(JSONException::class)
     override val location: String

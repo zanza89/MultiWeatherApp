@@ -1,22 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment">
 
     <TextView
-            android:id="@+id/text_home"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:id="@+id/textview_location"
+            android:text="@string/weather_data_location"
+            android:textSize="20sp"/>
+    <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/imageview_weathericon"
+            android:src="@drawable/icon"
+            android:layout_below="@id/textview_location"
+            android:contentDescription="@string/description_quelle_openweathermap" />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textview_temperature"
+            android:layout_below="@id/textview_location"
+            android:layout_toEndOf="@id/imageview_weathericon"
+            android:layout_marginStart="6dp"
+            android:textSize="26sp"
+            android:text="@string/weather_data_temperature_celsius"
+            android:textStyle="bold"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textview_description"
+            android:layout_toEndOf="@+id/textview_temperature"
+            android:layout_below="@+id/textview_temperature"
+            android:layout_marginStart="6dp"
+            android:text="@string/weather_data_description"
+            android:textSize="16sp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textview_provider"
+            android:layout_below="@+id/imageview_weathericon"
+            android:layout_marginTop="6dp"
+            android:text="@string/provider_url_openweathermap"
+            android:textSize="11sp"/>
+</RelativeLayout>

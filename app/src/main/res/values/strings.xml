@@ -3,4 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="weather_data_temperature_celsius">20°</string>
+    <string name="weather_data_location">Standort</string>
+    <string name="weather_data_description">Sonnig</string>
+    <string name="provider_url_openweathermap">https://www.openweathermap.com</string>
+    <string name="description_quelle_openweathermap">quelle: https://openweathermap.org/img/w/01d.png</string>
 </resources>
