@@ -26,7 +26,6 @@
             android:layout_toEndOf="@id/imageview_weathericon"
             android:layout_marginStart="6dp"
             android:textSize="26sp"
-            android:text="@string/weather_data_temperature_celsius"
             android:textStyle="bold"/>
     <TextView
             android:layout_width="wrap_content"
@@ -35,7 +34,6 @@
             android:layout_toEndOf="@+id/textview_temperature"
             android:layout_below="@+id/textview_temperature"
             android:layout_marginStart="6dp"
-            android:text="@string/weather_data_description"
             android:textSize="16sp"/>
     <TextView
             android:layout_width="wrap_content"
@@ -43,6 +41,5 @@
             android:id="@+id/textview_provider"
             android:layout_below="@+id/imageview_weathericon"
             android:layout_marginTop="6dp"
-            android:text="@string/provider_url_openweathermap"
             android:textSize="11sp"/>
 </RelativeLayout>

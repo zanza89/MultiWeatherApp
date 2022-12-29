@@ -41,6 +41,11 @@ class ExampleUnitTest {
     @Throws(IOException::class, JSONException::class)
     fun openWeatherStack_getResponseFromName() {
         val api = WeatherStackAPI.fromLocationName("Berlin")
+        println("Temp: ${api.temperature}")
+        println("Description: ${api.description}")
+        println("Icon: ${api.iconUrl}")
+        println("Location: ${api.location}")
+        println("Service Provider: ${api.providerUrl}")
         println()
     }
 
@@ -48,6 +53,11 @@ class ExampleUnitTest {
     @Throws(IOException::class, JSONException::class)
     fun openWeatherStack_getResponseFromLatLon() {
         val api = WeatherStackAPI.fromLatLon(37.77, -122.42) //San Francisco
+        println("Temp: ${api.temperature}")
+        println("Description: ${api.description}")
+        println("Icon: ${api.iconUrl}")
+        println("Location: ${api.location}")
+        println("Service Provider: ${api.providerUrl}")
         println()
     }
 

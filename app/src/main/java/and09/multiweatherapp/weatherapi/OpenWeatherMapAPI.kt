@@ -13,6 +13,8 @@ class OpenWeatherMapAPI private constructor(queryString: String): WeatherAPI {
     companion object {
         private const val API_KEY = BuildConfig.OpenWeatherMap_API_KEY
         private const val BASE_URL = "http://api.openweathermap.org/data/2.5/weather?id=524901&appid=$API_KEY&"
+
+        @FromLocationName
         @Throws(IOException::class, JSONException::class)
         fun fromLocationName(locationName: String?): WeatherAPI {
             return OpenWeatherMapAPI("q=" + URLEncoder.encode(locationName, "utf-8"))
@@ -21,6 +23,10 @@ class OpenWeatherMapAPI private constructor(queryString: String): WeatherAPI {
         fun fromLatLon(lat: Double, lon: Double): WeatherAPI {
             return OpenWeatherMapAPI("lat=$lat&lon=$lon")
         }
+    }
+
+    object Values{
+        const val NAME = "OpenWeatherMapAPI"
     }
 
     @get:Throws(JSONException::class)

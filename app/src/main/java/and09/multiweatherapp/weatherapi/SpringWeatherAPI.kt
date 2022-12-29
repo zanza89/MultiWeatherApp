@@ -9,14 +9,20 @@ import java.net.URLEncoder
 class SpringWeatherAPI private constructor(queryString: String) : WeatherAPI {
     private val weatherData: JSONObject
     companion object {
-        private const val BASE_URL = "http://localhost:8080/weather?"
+        private var BASE_URL = ""
+
+        @FromLocationName
         @Throws(IOException::class, JSONException::class)
         fun fromLocationName(locationName: String?): WeatherAPI {
-            return SpringWeatherAPI("location" + URLEncoder.encode(locationName, "UTF-8"))
+            return SpringWeatherAPI("location=" + URLEncoder.encode(locationName, "UTF-8"))
         }
         @Throws(IOException::class, JSONException::class)
         fun fromLatLon(lat: Double, lon: Double): WeatherAPI {
             return SpringWeatherAPI("query=$lat,$lon")
+        }
+        @Throws(IOException::class, JSONException::class)
+        fun setServerAdress(url: String?) {
+            BASE_URL = "http://$url:8080/weather?"
         }
     }
 
