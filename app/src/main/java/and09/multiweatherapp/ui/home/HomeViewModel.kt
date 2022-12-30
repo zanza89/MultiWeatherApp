@@ -69,14 +69,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 val app = getApplication() as Application
                 val prefs = PreferenceManager.getDefaultSharedPreferences(app)
                 val locationName = prefs.getString(app.getString(R.string.location_name), "Berlin")
-                val defaultWert = Class.forName(WeatherAPI::class.java.name).kotlin.simpleName
+                val defaultWert = Class.forName(OpenWeatherMapAPI::class.java.name).kotlin.simpleName
                 Log.i(javaClass.simpleName, "default value = $defaultWert")
                 val providerClassName = prefs.getString(app.getString(R.string.weather_provider), OpenWeatherMapAPI.Values.NAME)
                 try {
                     // Reflection API (dependencies nötig) "meta- programming" -> Vorteil hinzufügen neuer Wetterdienste ohne retrieveWeatherData() ändern/ergänzen zu müssen
                     val cls = Class.forName("${WeatherAPI::class.java.`package`?.name}.$providerClassName").kotlin
                     val func = cls.companionObject?.declaredFunctions?.find { it.hasAnnotation<FromLocationName>() }
-                    if (cls.simpleName.toString() == "SpringWeatherAPI") {
+                    if (providerClassName == "SpringWeatherAPI") {
                         val serverAdress = prefs.getString(app.getString(R.string.server_adress), "unknown")
                         SpringWeatherAPI.setServerAdress(serverAdress)
                     }

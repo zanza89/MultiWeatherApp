@@ -16,10 +16,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        Properties openWeatherMapApi = new Properties()
-        openWeatherMapApi.load(project.rootProject.file("local.properties").newDataInputStream())
-        buildConfigField "String", "OpenWeatherMap_API_KEY", "\"${openWeatherMapApi.getProperty("OpenWeatherMap_API_KEY")}\""
-        buildConfigField "String", "WeatherStack_API_KEY", "\"${openWeatherMapApi.getProperty("WeatherStack_API_KEY")}\""
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        buildConfigField "String", "OpenWeatherMap_API_KEY", "\"${properties.getProperty("OpenWeatherMap_API_KEY")}\""
+        buildConfigField "String", "WeatherStack_API_KEY", "\"${properties.getProperty("WeatherStack_API_KEY")}\""
     }
 
     buildTypes {
