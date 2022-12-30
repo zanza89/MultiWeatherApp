@@ -1,13 +1,13 @@
 package and09.multiweatherapp.ui.home
 
 import and09.multiweatherapp.R
-import and09.multiweatherapp.weatherapi.FromLocationName
-import and09.multiweatherapp.weatherapi.OpenWeatherMapAPI
-import and09.multiweatherapp.weatherapi.SpringWeatherAPI
-import and09.multiweatherapp.weatherapi.WeatherAPI
+import and09.multiweatherapp.weatherapi.*
 import android.app.Application
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
+import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -29,11 +29,6 @@ import kotlin.reflect.full.declaredFunctions
 import kotlin.reflect.full.hasAnnotation
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
-    val prefs = PreferenceManager.getDefaultSharedPreferences(application)
-    /*private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text*/
 
     private val _location: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
@@ -64,23 +59,48 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         CoroutineScope(Dispatchers.Main).launch {
             var weather : WeatherAPI? = null
             var bitmap : Bitmap? = null
-            var errorMessage : String = ""
+            var errorMessage = ""
             withContext(Dispatchers.IO) {
                 val app = getApplication() as Application
                 val prefs = PreferenceManager.getDefaultSharedPreferences(app)
                 val locationName = prefs.getString(app.getString(R.string.location_name), "Berlin")
-                val defaultWert = Class.forName(OpenWeatherMapAPI::class.java.name).kotlin.simpleName
-                Log.i(javaClass.simpleName, "default value = $defaultWert")
                 val providerClassName = prefs.getString(app.getString(R.string.weather_provider), OpenWeatherMapAPI.Values.NAME)
                 try {
                     // Reflection API (dependencies nötig) "meta- programming" -> Vorteil hinzufügen neuer Wetterdienste ohne retrieveWeatherData() ändern/ergänzen zu müssen
                     val cls = Class.forName("${WeatherAPI::class.java.`package`?.name}.$providerClassName").kotlin
                     val func = cls.companionObject?.declaredFunctions?.find { it.hasAnnotation<FromLocationName>() }
+                    val locationManager = app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                    val providers = locationManager.getProviders(true)
+                    // Server Adresse für die SpringWeather API setzen
                     if (providerClassName == "SpringWeatherAPI") {
                         val serverAdress = prefs.getString(app.getString(R.string.server_adress), "unknown")
                         SpringWeatherAPI.setServerAdress(serverAdress)
                     }
-                    weather = func?.call(cls.companionObjectInstance, locationName) as WeatherAPI
+                    // Bei Aktivierung von automatischer Standortbestimmung
+                    if (prefs.getBoolean(app.getString(R.string.use_gps), false)) {
+                        var lastLocation: Location? = null
+                        if (providers.isNullOrEmpty()) {
+                            Log.d(javaClass.simpleName, "erforderliche Berechtigung nicht erteilt.")
+                            return@withContext
+                        }
+                        if (providers.contains("gps")) {
+                            val providerName = providers.get(providers.indexOf("gps"))
+                            try {
+                                lastLocation = locationManager.getLastKnownLocation(providerName)
+                            } catch (ex: SecurityException) {
+                                Log.e(javaClass.simpleName, "erforderliche Berechtigung ${ex.toString()} nicht erteilt")
+                            }
+                            if (lastLocation != null) {
+                                val func = cls.companionObject?.declaredFunctions?.find { it.hasAnnotation<FromLatLon>() }
+                                weather = func?.call(cls.companionObjectInstance, lastLocation.latitude, lastLocation.longitude) as WeatherAPI
+                                Log.d(javaClass.simpleName, "LastknownLocation = ${lastLocation.latitude},${lastLocation.longitude}")
+                            }
+                        }
+                    }
+                    // Fall keine Geo-Daten vorliegen
+                    if (weather == null) {
+                        weather = func?.call(cls.companionObjectInstance, locationName) as WeatherAPI
+                    }
 
                     Log.d(javaClass.simpleName, "Temp: ${weather?.temperature}")
                     Log.d(javaClass.simpleName, "Description: ${weather?.description}")
@@ -116,13 +136,4 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             Log.e(javaClass.simpleName, ex.toString())
         }
     }
-    /*fun doAction() {
-        CoroutineScope(Dispatchers.Main).launch() {
-            while(true) {
-                _text.value = java.util.Date().toString()
-                delay(1000L)
-            }
-        }
-        Log.d(javaClass.simpleName, "Nach Aufruf von doAction()")
-    }*/
 }

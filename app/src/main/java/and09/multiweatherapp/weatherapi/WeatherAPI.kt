@@ -2,6 +2,7 @@ package and09.multiweatherapp.weatherapi
 
 import org.json.JSONException
 annotation class FromLocationName
+annotation class FromLatLon
 interface WeatherAPI {
     @get:Throws(JSONException::class)
     val temperature: Int

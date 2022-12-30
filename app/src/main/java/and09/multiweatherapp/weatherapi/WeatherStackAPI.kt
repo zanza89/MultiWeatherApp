@@ -19,7 +19,7 @@ class WeatherStackAPI private constructor(queryString: String) :WeatherAPI {
         fun fromLocationName(locationName: String?): WeatherStackAPI {
             return WeatherStackAPI("query=" + URLEncoder.encode(locationName, "UTF-8"))
         }
-
+        @FromLatLon
         @Throws(IOException::class, JSONException::class)
         fun fromLatLon(lat: Double, lon: Double): WeatherStackAPI {
             return WeatherStackAPI("query=$lat,$lon")

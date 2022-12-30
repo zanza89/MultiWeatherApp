@@ -16,6 +16,7 @@ class SpringWeatherAPI private constructor(queryString: String) : WeatherAPI {
         fun fromLocationName(locationName: String?): WeatherAPI {
             return SpringWeatherAPI("location=" + URLEncoder.encode(locationName, "UTF-8"))
         }
+        @FromLatLon
         @Throws(IOException::class, JSONException::class)
         fun fromLatLon(lat: Double, lon: Double): WeatherAPI {
             return SpringWeatherAPI("query=$lat,$lon")

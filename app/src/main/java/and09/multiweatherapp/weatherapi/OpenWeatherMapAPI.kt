@@ -19,6 +19,7 @@ class OpenWeatherMapAPI private constructor(queryString: String): WeatherAPI {
         fun fromLocationName(locationName: String?): WeatherAPI {
             return OpenWeatherMapAPI("q=" + URLEncoder.encode(locationName, "utf-8"))
         }
+        @FromLatLon
         @Throws(IOException::class, JSONException::class)
         fun fromLatLon(lat: Double, lon: Double): WeatherAPI {
             return OpenWeatherMapAPI("lat=$lat&lon=$lon")

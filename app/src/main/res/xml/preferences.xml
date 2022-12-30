@@ -6,7 +6,7 @@
             app:iconSpaceReserved="false">
         <CheckBoxPreference
                 android:title="Automatische Standortbestimmung"
-                android:key="use_gps"
+                android:key="@string/use_gps"
                 android:defaultValue="false"
                 app:iconSpaceReserved="false" />
         <EditTextPreference
